@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>跳转中...</title>
+</head>
+<body>
+<h1>页面将与<span id="sec">3</span>秒后跳转...</h1>
+</body>
+<script>
+    var sec = 3;
+    setInterval(function () {
+        -- sec;
+        if(sec == 0) {
+            window.location = '/hello';
+        }
+        var ele = document.getElementById("sec");
+        ele.innerText = sec;
+    }, 1000);
+</script>
+
+</html>
