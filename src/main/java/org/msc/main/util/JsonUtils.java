@@ -14,8 +14,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Json {
-    private static final Logger logger = LoggerFactory.getLogger(Json.class);
+public class JsonUtils {
+    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
     private static final ObjectMapper mapper = initObjectMapper();
     private static final String EMPTY_JSON_OBJ = "{}";
 
@@ -37,7 +37,7 @@ public class Json {
     }
 
     public static final String readJsonFile(String file) {
-        InputStream is = Json.class.getClassLoader().getResourceAsStream(file);
+        InputStream is = JsonUtils.class.getClassLoader().getResourceAsStream(file);
         try {
             JsonNode node = mapper.readTree(is);
             String json = node.toString();

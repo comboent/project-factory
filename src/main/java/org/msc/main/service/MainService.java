@@ -1,5 +1,7 @@
 package org.msc.main.service;
 
+import org.msc.main.exception.Code;
+import org.msc.main.exception.ExceptionFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,6 +17,6 @@ public class MainService {
     }
 
     public void error() {
-        throw new RuntimeException("error...");
+        throw ExceptionFactory.create(Code.USER_NOT_FOUND);
     }
 }

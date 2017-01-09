@@ -2,19 +2,25 @@ package org.msc.main.controller.util;
 
 import net.sf.cglib.reflect.FastClass;
 import net.sf.cglib.reflect.FastMethod;
+import org.msc.main.exception.BusinessException;
+import org.msc.main.net.Response;
+import org.msc.main.net.ResponseFactory;
+import org.msc.main.util.MsgUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ControllerSupport implements ApplicationContextAware {
+
+    private static final Logger logger = LoggerFactory.getLogger(ControllerSupport.class);
+
     protected ApplicationContext applicationContext;
 
     private Map<String, FastMethod> methodCache = new ConcurrentHashMap<String, FastMethod>();
@@ -29,9 +35,10 @@ public class ControllerSupport implements ApplicationContextAware {
      * @param bean
      * @param method
      * @param params
+     * @param api
      * @return
      */
-    protected FastMethod findMethod(Object bean, String method, List<Object> params) {
+    protected FastMethod findMethod(Object bean, String method, List<Object> params, String api) {
         Class<?> clazz = bean.getClass();
         Method[] declaredMethods = clazz.getDeclaredMethods();
         for (Method declaredMethod : declaredMethods) {
@@ -40,7 +47,7 @@ public class ControllerSupport implements ApplicationContextAware {
                 return fastClass.getMethod(declaredMethod);
             }
         }
-        throw new RuntimeException("can not find method " + method + " in class " + clazz.getCanonicalName() + " with param " + params);
+        throw new RuntimeException("can not found method "+ method +" in class " + bean.getClass().getCanonicalName() + " with params " + params);
     }
 
     protected void cacheMethod(String serviceAndMethod, FastMethod method) {
@@ -51,31 +58,18 @@ public class ControllerSupport implements ApplicationContextAware {
         return methodCache.get(serviceAndMethod);
     }
 
-    protected ErrObj handleException(Throwable targetException, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
-        ErrObj obj = new ErrObj();
-        obj.setCode(0);
-        obj.setMsg(targetException.getMessage());
-        return obj;
+    protected Response handleException(Throwable e) {
+        if(e instanceof BusinessException) {
+            logger.info("business error", e);
+            BusinessException ex = (BusinessException) e;
+            return ResponseFactory.createErrResponse(ex.getMsg());
+        } else {
+            logger.error("unknown error", e);
+            return ResponseFactory.createErrResponse(MsgUtils.getMsg("err.sys"));
+        }
     }
 
-    class ErrObj {
-        private int code;
-        private String msg;
-
-        public int getCode() {
-            return code;
-        }
-
-        public void setCode(int code) {
-            this.code = code;
-        }
-
-        public String getMsg() {
-            return msg;
-        }
-
-        public void setMsg(String msg) {
-            this.msg = msg;
-        }
+    protected Response castToResponse(Object returnObj) {
+        return ResponseFactory.createOkResponse(returnObj);
     }
 }
