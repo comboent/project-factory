@@ -1,9 +1,9 @@
 package org.msc.main.util;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.sf.cglib.core.ReflectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,30 +11,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class JsonUtils {
     private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
-    private static final ObjectMapper mapper = initObjectMapper();
-    private static final String EMPTY_JSON_OBJ = "{}";
-
-    private static ObjectMapper initObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-        mapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
-            @Override
-            public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-                jsonGenerator.writeString("");
-            }
-        });
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-        return mapper;
-    }
+    private static final ObjectMapper mapper = ObjectMapperFactory.getInstance();
 
     public static final String readJsonFile(String file) {
         InputStream is = JsonUtils.class.getClassLoader().getResourceAsStream(file);
@@ -44,7 +25,7 @@ public class JsonUtils {
             return json;
         } catch (IOException e) {
             logger.error("can not open file " + file);
-            return EMPTY_JSON_OBJ;
+            return "";
         }
     }
 
@@ -60,14 +41,14 @@ public class JsonUtils {
 
     public static final String toJson(Object src) {
         if (src == null) {
-            return EMPTY_JSON_OBJ;
+            return "";
         }
         try {
             return mapper.writeValueAsString(src);
         } catch (JsonProcessingException e) {
             logger.error("to json meet an exception : " + e.getMessage());
         }
-        return EMPTY_JSON_OBJ;
+        return "";
     }
 
     public static final <T> T fromJson(String json, Class<T> clazz) {

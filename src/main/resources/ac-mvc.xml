@@ -14,6 +14,9 @@
                         <value>text/html;charset=UTF-8</value>
                     </list>
                 </property>
+                <property name="objectMapper">
+                    <bean class="org.msc.main.util.ObjectMapperFactory" factory-method="getInstance"/>
+                </property>
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
