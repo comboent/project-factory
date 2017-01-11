@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,12 +28,20 @@ import java.util.Iterator;
 import java.util.List;
 
 @Controller
-public class MainController extends ControllerSupport {
+public class MainController extends ControllerSupport{
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
-    @Autowired
     private CommonsMultipartResolver multipartResolver;
+
+    @PostConstruct
+    private void init() {
+        //完美Hack百度Ueditor与CommonsMultipartResolver在文件上传时冲突问题
+        multipartResolver = new CommonsMultipartResolver(servletContext);
+        multipartResolver.setDefaultEncoding("utf-8");
+        multipartResolver.setMaxInMemorySize(131072);
+        multipartResolver.setMaxUploadSize(-1);
+    }
 
     @Autowired
     private AppConfig appConfig;
@@ -41,6 +50,10 @@ public class MainController extends ControllerSupport {
     @ResponseBody
     public Response dispatch(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws Throwable {
         try {
+            boolean isMultipart = multipartResolver.isMultipart(req);
+            if(isMultipart) {
+                req = multipartResolver.resolveMultipart(req);
+            }
             String api = req.getParameter("api");//e.g service.method
             String args = req.getParameter("args");//json数组形式的String e.g ["a", 1, true, 1.5]
             if(StringUtils.isEmpty(api)) {
@@ -49,7 +62,7 @@ public class MainController extends ControllerSupport {
             List<Object> params = JsonUtils.fromJsonToList(args, Object.class);
             RequestContext ctx = new RequestContext(req, resp, session);
             params.add(ctx);
-            if(multipartResolver.isMultipart(req)){
+            if(isMultipart){
                 MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) req;
                 Iterator<String> iter = multiRequest.getFileNames();
                 while(iter.hasNext()){
@@ -92,4 +105,5 @@ public class MainController extends ControllerSupport {
             return handleException(e);
         }
     }
+
 }

@@ -11,17 +11,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.ServletContextAware;
 
+import javax.servlet.ServletContext;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ControllerSupport implements ApplicationContextAware {
+public class ControllerSupport implements ApplicationContextAware, ServletContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(ControllerSupport.class);
 
     protected ApplicationContext applicationContext;
+
+    protected ServletContext servletContext;
 
     private Map<String, FastMethod> methodCache = new ConcurrentHashMap<String, FastMethod>();
 
@@ -71,5 +75,10 @@ public class ControllerSupport implements ApplicationContextAware {
 
     protected Response castToResponse(Object returnObj) {
         return ResponseFactory.createOkResponse(returnObj);
+    }
+
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
     }
 }

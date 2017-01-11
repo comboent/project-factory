@@ -21,19 +21,21 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!--取消对ueditor请求的拦截-->
+
     <mvc:resources location="/upload/" mapping="/upload/**"/>
+    <!--百度Ueditor富文本编辑器静态文件-->
+    <mvc:resources location="/ueditor/" mapping="/ueditor/**"/>
 
-    <!-- 文件上传 -->
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="defaultEncoding" value="utf-8" />
-        <!--字节为单位-->
-        <!--不做限制，在Controller中进行检测，若这里限制 会拒绝上传请求，这样不友好-->
-        <property name="maxUploadSize" value="-1" />
-        <!--128KB In-Memory缓存-->
-        <property name="maxInMemorySize" value="131072" />
-
-        <property name="resolveLazily" value="true"/>
-    </bean>
+    <!--&lt;!&ndash; 文件上传 &ndash;&gt;-->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+        <!--<property name="defaultEncoding" value="utf-8" />-->
+        <!--&lt;!&ndash;字节为单位&ndash;&gt;-->
+        <!--&lt;!&ndash;不做限制，在Controller中进行检测，若这里限制 会拒绝上传请求，这样不友好&ndash;&gt;-->
+        <!--<property name="maxUploadSize" value="-1" />-->
+        <!--&lt;!&ndash;128KB In-Memory缓存&ndash;&gt;-->
+        <!--<property name="maxInMemorySize" value="131072" />-->
+    <!--</bean>-->
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
