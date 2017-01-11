@@ -20,6 +20,19 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8" />
+        <!--字节为单位-->
+        <!--不做限制，在Controller中进行检测，若这里限制 会拒绝上传请求，这样不友好-->
+        <property name="maxUploadSize" value="-1" />
+        <!--128KB In-Memory缓存-->
+        <property name="maxInMemorySize" value="131072" />
+
+        <property name="resolveLazily" value="true"/>
+    </bean>
+
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>

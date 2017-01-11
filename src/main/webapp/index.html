@@ -1,22 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>跳转中...</title>
+    <title>Upload a file please</title>
 </head>
 <body>
-<h1>页面将与<span id="sec">3</span>秒后跳转...</h1>
+<h1>Please upload a file</h1>
+<form method="post" action="/app" enctype="multipart/form-data">
+    <input type="hidden" name="api" value="mainService.hello">
+    <input type="hidden" name="args" value="[&quot;msc&quot;,456]">
+    <input type="text" name="name"/>
+    <input type="file" name="file"/>
+    <input type="submit"/>
+</form>
 </body>
-<script>
-    var sec = 3;
-    setInterval(function () {
-        -- sec;
-        if(sec == 0) {
-            window.location = '/hello';
-        }
-        var ele = document.getElementById("sec");
-        ele.innerText = sec;
-    }, 1000);
-</script>
-
 </html>
