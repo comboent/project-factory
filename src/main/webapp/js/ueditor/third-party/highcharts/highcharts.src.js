@@ -2231,7 +2231,7 @@ SVGElement.prototype = {
 						skipAttr = true;
 					}
 
-					// let the shadow follow the main element
+					// let the shadow follow the app element
 					if (shadows && /^(width|height|visibility|x|y|d|transform|cx|cy|r)$/.test(key)) {
 						i = shadows.length;
 						while (i--) {
@@ -4768,7 +4768,7 @@ Highcharts.VMLElement = VMLElement = {
 					// handle visibility
 					} else if (key === 'visibility') {
 
-						// let the shadow follow the main element
+						// let the shadow follow the app element
 						if (shadows) {
 							i = shadows.length;
 							while (i--) {
@@ -15386,7 +15386,7 @@ var AreaSeries = extendClass(Series, {
 			options = this.options,
 			negativeColor = options.negativeColor,
 			negativeFillColor = options.negativeFillColor,
-			props = [['area', this.color, options.fillColor]]; // area name, main color, fill color
+			props = [['area', this.color, options.fillColor]]; // area name, app color, fill color
 		
 		if (negativeColor || negativeFillColor) {
 			props.push(['areaNeg', negativeColor, negativeFillColor]);
@@ -15475,7 +15475,7 @@ var SplineSeries = extendClass(Series, {
 			rightContX = (smoothing * plotX + nextX) / denom;
 			rightContY = (smoothing * plotY + nextY) / denom;
 
-			// have the two control points make a straight line through main point
+			// have the two control points make a straight line through app point
 			correction = ((rightContY - leftContY) * (rightContX - plotX)) /
 				(rightContX - leftContX) + plotY - rightContY;
 

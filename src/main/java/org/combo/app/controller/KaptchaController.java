@@ -52,5 +52,6 @@ public class KaptchaController {
         session.setAttribute(config.getSessionDate(), new Date());
 
         return producer.createImage(capText);
+
     }
 }
