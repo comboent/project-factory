@@ -8,8 +8,6 @@
     <mvc:default-servlet-handler/>
     <mvc:annotation-driven>
         <mvc:message-converters>
-            <bean class="org.springframework.http.converter.BufferedImageHttpMessageConverter"/>
-
             <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="supportedMediaTypes">
                     <list>

@@ -191,6 +191,7 @@
             <artifactId>json</artifactId>
             <version>20160212</version>
         </dependency>
+        <!--对谷歌kaptcha支持-->
         <dependency>
             <groupId>com.jhlabs</groupId>
             <artifactId>filters</artifactId>

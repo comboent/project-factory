@@ -1,42 +1,29 @@
 package org.combo.app.controller;
 
+import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
-import com.google.code.kaptcha.util.Config;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Date;
-import java.util.Properties;
 
 @Controller
 public class KaptchaController {
 
     @Autowired
-    private Properties kaptcha;
-
     private Producer producer;
 
-    private Config config;
-
-    @PostConstruct
-    private void init() {
-        ImageIO.setUseCache(false);
-        Config config = new Config(kaptcha);
-        this.config = config;
-        producer = config.getProducerImpl();
-    }
-
     //使用自定义Content-Type类型做Hack 从而使用BufferedImageHttpMessageConverter
-    @RequestMapping(value = "/kaptcha", consumes = "app/kaptcha")
-    @ResponseBody
-    public BufferedImage kaptcha(HttpServletResponse resp, HttpSession session) {
+    @RequestMapping(value = "/kaptcha")
+    public void kaptcha(HttpServletResponse resp, HttpSession session) {
         // Set to expire far in the past.
         resp.setDateHeader("Expires", 0);
         // Set standard HTTP/1.1 no-cache headers.
@@ -48,10 +35,20 @@ public class KaptchaController {
 
         // create the text for the image
         String capText = producer.createText();
-        session.setAttribute(config.getSessionKey(), capText);
-        session.setAttribute(config.getSessionDate(), new Date());
+        session.setAttribute(Constants.KAPTCHA_SESSION_CONFIG_KEY, capText);
+        session.setAttribute(Constants.KAPTCHA_SESSION_CONFIG_DATE, new Date());
 
-        return producer.createImage(capText);
+        BufferedImage image = producer.createImage(capText);
+        resp.setContentType("image/png");
+        ServletOutputStream out = null;
+        try {
+            out = resp.getOutputStream();
+            ImageIO.write(image, "png", out);
+            out.flush();
+        } catch (IOException e) {
+        } finally {
+            IOUtils.closeQuietly(out);
+        }
 
     }
 }
