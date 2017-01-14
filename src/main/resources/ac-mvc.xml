@@ -33,7 +33,7 @@
     <mvc:resources location="/css/" mapping="/css/**"/>
     <mvc:resources location="/img/" mapping="/img/**"/>
 
-    <!--&lt;!&ndash; 文件上传 &ndash;&gt;-->
+    <!--&lt;!&ndash; 文件上传 当使用JspController的时候需要解开该注释 &ndash;&gt;-->
     <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
         <!--<property name="defaultEncoding" value="utf-8" />-->
         <!--&lt;!&ndash;字节为单位&ndash;&gt;-->

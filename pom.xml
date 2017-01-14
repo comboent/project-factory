@@ -138,6 +138,24 @@
             <version>1.2.5</version>
         </dependency>
         <!--数据库 END-->
+        <!--JSP BEGIN-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sitemesh</groupId>
+            <artifactId>sitemesh</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <!--JSP END-->
 
         <!--工具 BEGIN-->
         <!--json-->

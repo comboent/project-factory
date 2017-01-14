@@ -2,10 +2,8 @@ package org.combo.app.controller.util;
 
 import net.sf.cglib.reflect.FastClass;
 import net.sf.cglib.reflect.FastMethod;
-import org.combo.app.exception.BusinessException;
 import org.combo.app.net.Response;
 import org.combo.app.net.ResponseFactory;
-import org.combo.app.util.MsgUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -60,17 +58,6 @@ public class ControllerSupport implements ApplicationContextAware, ServletContex
 
     protected FastMethod getMethod(String serviceAndMethod) {
         return methodCache.get(serviceAndMethod);
-    }
-
-    protected Response handleException(Throwable e) {
-        if(e instanceof BusinessException) {
-            logger.info("business error", e);
-            BusinessException ex = (BusinessException) e;
-            return ResponseFactory.createErrResponse(ex.getMsg());
-        } else {
-            logger.error("unknown error", e);
-            return ResponseFactory.createErrResponse(MsgUtils.getMsg("err.sys"));
-        }
     }
 
     protected Response castToResponse(Object returnObj) {
