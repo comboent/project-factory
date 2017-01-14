@@ -4,11 +4,19 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="org.msc.**.conf"/>
+    <context:component-scan base-package="org.combo.**.conf"/>
     <bean id="app" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="locations">
             <list>
                 <value>classpath:appConf.properties</value>
+                <value>classpath:kaptcha.properties</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="kaptcha" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:kaptcha.properties</value>
             </list>
         </property>
     </bean>

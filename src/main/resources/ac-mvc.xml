@@ -4,18 +4,22 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="org.msc.**.controller"/>
+    <context:component-scan base-package="org.combo.**.controller"/>
     <mvc:default-servlet-handler/>
     <mvc:annotation-driven>
         <mvc:message-converters>
+            <bean class="org.springframework.http.converter.BufferedImageHttpMessageConverter"/>
+
             <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="supportedMediaTypes">
                     <list>
+                        <value>application/json;charset=UTF-8</value>
+                        <!--避免IE出现下载json文件的情况-->
                         <value>text/html;charset=UTF-8</value>
                     </list>
                 </property>
                 <property name="objectMapper">
-                    <bean class="org.msc.main.util.ObjectMapperFactory" factory-method="getInstance"/>
+                    <bean class="org.combo.app.util.ObjectMapperFactory" factory-method="getInstance"/>
                 </property>
             </bean>
         </mvc:message-converters>
@@ -26,6 +30,10 @@
     <mvc:resources location="/upload/" mapping="/upload/**"/>
     <!--百度Ueditor富文本编辑器静态文件-->
     <mvc:resources location="/ueditor/" mapping="/ueditor/**"/>
+    <!--静态资源-->
+    <mvc:resources location="/js/" mapping="/js/**"/>
+    <mvc:resources location="/css/" mapping="/css/**"/>
+    <mvc:resources location="/img/" mapping="/img/**"/>
 
     <!--&lt;!&ndash; 文件上传 &ndash;&gt;-->
     <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
