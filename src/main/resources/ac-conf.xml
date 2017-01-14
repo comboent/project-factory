@@ -13,11 +13,4 @@
             </list>
         </property>
     </bean>
-    <bean id="kaptcha" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="locations">
-            <list>
-                <value>classpath:kaptcha.properties</value>
-            </list>
-        </property>
-    </bean>
 </beans>
