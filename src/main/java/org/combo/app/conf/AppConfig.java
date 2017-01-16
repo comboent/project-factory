@@ -26,12 +26,26 @@ public class AppConfig {
     @Value("#{app.exceptionResolverImpl}")
     private String exceptionResolverImpl;
 
+    @Value("#{app.hashAlgorithmName}")
+    private String hashAlgorithmName;
+
+    @Value("#{app.hashIterations}")
+    private int hashIterations;
+
     public long getUploadLimit() {
         return uploadLimit;
     }
 
     public String getUploadRootPath() {
         return uploadRootPath;
+    }
+
+    public String getHashAlgorithmName() {
+        return hashAlgorithmName;
+    }
+
+    public int getHashIterations() {
+        return hashIterations;
     }
 
     public ExceptionResolver getExceptionResolver() {
