@@ -2,8 +2,11 @@ package org.combo.app.shiro.authc;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 
 public class AppAuthenticationInfo implements AuthenticationInfo {
+
+    private String username;
 
     private String hashedPwd;
 
@@ -13,16 +16,20 @@ public class AppAuthenticationInfo implements AuthenticationInfo {
 
     private int hashIterations;
 
-    public AppAuthenticationInfo(String hashedPwd, String salt, String hashAlgorithmName, int hashIterations) {
+    private PrincipalCollection pc;
+
+    public AppAuthenticationInfo(String realm, String username, String hashedPwd, String salt, String hashAlgorithmName, int hashIterations) {
+        this.username = username;
         this.hashedPwd = hashedPwd;
         this.salt = salt;
         this.hashAlgorithmName = hashAlgorithmName;
         this.hashIterations = hashIterations;
+        pc = new SimplePrincipalCollection(username, realm);
     }
 
     @Override
     public PrincipalCollection getPrincipals() {
-        return null;
+        return pc;
     }
 
     @Override
@@ -44,5 +51,9 @@ public class AppAuthenticationInfo implements AuthenticationInfo {
 
     public int getHashIterations() {
         return hashIterations;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

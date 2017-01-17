@@ -9,7 +9,7 @@
         <property name="driverClass" value="${c3p0.driverClass}"/>
         <property name="jdbcUrl" value="${c3p0.jdbcUrl}"/>
         <property name="user" value="${c3p0.user}"/>
-        <property name="rawPwd" value="${c3p0.rawPwd}"/>
+        <property name="password" value="${c3p0.password}"/>
         <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>
         <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>
         <property name="minPoolSize" value="${c3p0.minPoolSize}"/>

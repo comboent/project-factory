@@ -32,6 +32,9 @@ public class AppConfig {
     @Value("#{app.hashIterations}")
     private int hashIterations;
 
+    @Value("#{app.pwdRetryLimit}")
+    private int pwdRetryLimit;
+
     public long getUploadLimit() {
         return uploadLimit;
     }
@@ -64,5 +67,9 @@ public class AppConfig {
             logger.error("can not found class " + exceptionResolverImpl, e);
         }
         return null;
+    }
+
+    public int getPwdRetryLimit() {
+        return pwdRetryLimit;
     }
 }

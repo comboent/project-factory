@@ -3,6 +3,13 @@
 
     <diskStore path="java.io.tmpdir"/>
 
+    <defaultCache
+            maxEntriesLocalHeap="2000"
+            eternal="false"
+            overflowToDisk="false"
+            memoryStoreEvictionPolicy="LRU">
+    </defaultCache>
+
     <!-- 登录记录缓存 锁定10分钟 -->
     <cache name="passwordRetryCache"
            maxEntriesLocalHeap="2000"

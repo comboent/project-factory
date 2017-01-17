@@ -2,6 +2,7 @@ package org.combo.app.controller;
 
 import org.combo.app.controller.util.ControllerSupport;
 import org.combo.app.service.JspService;
+import org.combo.app.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,31 @@ public class JspController extends ControllerSupport{
     @Autowired
     private JspService jspService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping("/hello")
     public ModelAndView hello(@RequestParam String name) {
         return jspService.hello(name);
+    }
+
+    @RequestMapping("/showReg")
+    public ModelAndView showReg() {
+        return new ModelAndView("reg");
+    }
+
+    @RequestMapping("/reg")
+    public ModelAndView reg(@RequestParam String username, @RequestParam String pwd) {
+        return userService.regUser(username, pwd);
+    }
+
+    @RequestMapping("/login")
+    public ModelAndView login(@RequestParam String username, @RequestParam String pwd) {
+        return userService.login(username, pwd);
+    }
+    @RequestMapping("/subject")
+    public ModelAndView subject() {
+        return userService.subjectInfo();
     }
 
 }

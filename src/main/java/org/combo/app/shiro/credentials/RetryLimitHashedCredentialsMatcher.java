@@ -4,10 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.crypto.hash.SimpleHash;
+import org.combo.app.conf.AppConfig;
 import org.combo.app.shiro.authc.AppAuthenticationInfo;
 import org.combo.app.shiro.authc.AppAuthenticationToken;
 
@@ -15,10 +17,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher {
 
+    private AppConfig appConfig;
+
     private Cache<String, AtomicInteger> passwordRetryCache;
 
     public RetryLimitHashedCredentialsMatcher(CacheManager cacheManager) {
         passwordRetryCache = cacheManager.getCache("passwordRetryCache");
+    }
+
+    public void setAppConfig(AppConfig appConfig) {
+        this.appConfig = appConfig;
     }
 
     @Override
@@ -37,7 +45,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
             retryCount = new AtomicInteger(0);
             passwordRetryCache.put(username, retryCount);
         }
-        if (retryCount.incrementAndGet() > 5) {
+        if (retryCount.incrementAndGet() > appConfig.getPwdRetryLimit()) {
             //if retry count > 5 throw
             throw new ExcessiveAttemptsException();
         }
@@ -59,6 +67,8 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
         if (match) {
             //clear retry count
             passwordRetryCache.remove(username);
+        } else {
+            throw new IncorrectCredentialsException();
         }
         return match;
     }
