@@ -12,8 +12,9 @@
 </head>
 <body>
 <div>
-    <h1><%=SecurityUtils.getSubject().isAuthenticated()%></h1>
-    <h1><%=SecurityUtils.getSubject().getPrincipals()%></h1>
+    <h1>isAuthc : <%=SecurityUtils.getSubject().isAuthenticated()%></h1>
+    <h1>principals: <%=SecurityUtils.getSubject().getPrincipals()%></h1>
+    <h1>remembered: <%=SecurityUtils.getSubject().isRemembered()%></h1>
 </div>
 </body>
 </html>

@@ -1,16 +1,20 @@
 package org.combo.app.shiro.authc;
 
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.RememberMeAuthenticationToken;
 
-public class AppAuthenticationToken implements AuthenticationToken{
+public class AppAuthenticationToken implements AuthenticationToken, RememberMeAuthenticationToken{
 
     private String username;
 
     private String rawPwd;
 
-    public AppAuthenticationToken(String username, String rawPwd) {
+    private boolean rememberMe;
+
+    public AppAuthenticationToken(String username, String rawPwd, boolean rememberMe) {
         this.username = username;
         this.rawPwd = rawPwd;
+        this.rememberMe = rememberMe;
     }
 
     public String getUsername() {
@@ -29,5 +33,10 @@ public class AppAuthenticationToken implements AuthenticationToken{
     @Override
     public Object getCredentials() {
         return rawPwd;
+    }
+
+    @Override
+    public boolean isRememberMe() {
+        return rememberMe;
     }
 }

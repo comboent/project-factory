@@ -43,8 +43,8 @@ public class JspController extends ControllerSupport{
     }
 
     @RequestMapping("/login")
-    public ModelAndView login(@RequestParam String username, @RequestParam String pwd) {
-        return userService.login(username, pwd);
+    public ModelAndView login(@RequestParam String username, @RequestParam String pwd, @RequestParam boolean rememberMe) {
+        return userService.login(username, pwd, rememberMe);
     }
     @RequestMapping("/subject")
     public ModelAndView subject() {

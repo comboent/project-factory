@@ -23,6 +23,7 @@
     <form action="/jsp/login" method="post">
         username:<input name="username"><br/>
         pwd:<input name="pwd"><br/>
+        rememberMe:<input name="rememberMe"><br/>
         <input type="submit" value="commit">
     </form>
 </div>

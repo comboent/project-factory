@@ -1,0 +1,1 @@
+注意ueditor.config.js中 serverUrl 要与 UEditorController 中的mapping对上

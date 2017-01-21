@@ -59,9 +59,9 @@ public class UserService {
         return mav;
     }
 
-    public ModelAndView login(String username, String pwd) {
+    public ModelAndView login(String username, String pwd, boolean rememberMe) {
         Subject subject = SecurityUtils.getSubject();
-        AppAuthenticationToken token = new AppAuthenticationToken(username, pwd);
+        AppAuthenticationToken token = new AppAuthenticationToken(username, pwd, rememberMe);
         try {
             subject.login(token);
         } catch (IncorrectCredentialsException e) {
@@ -81,6 +81,8 @@ public class UserService {
 
     public ModelAndView subjectInfo() {
         Subject subject = SecurityUtils.getSubject();
-        return new ModelAndView("subject").addObject("sub", subject);
+        boolean remembered = subject.isRemembered();
+        boolean authenticated = subject.isAuthenticated();
+        return new ModelAndView("subject");
     }
 }
